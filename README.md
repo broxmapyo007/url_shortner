@@ -1,13 +1,13 @@
-#URl shortener Advance project
+URl shortener Advance project
 
-#Project details:
+Project details:
 
         language : python3
         framework : FastAPI,jinja2
         server run : uvicorn
         database : sqlite3
 
-#Architecture:
+Architecture:
 
     
      All original url that need to turn into clean url , this project can achieve this with more feature then other projects
@@ -23,7 +23,7 @@
         7. if you are wondering how user can continue to know or what to do once url expired, we popup a message with email provide by  
             firm user,
         
-#API :
+API :
 
         #1. Api to generate urls
         
@@ -60,11 +60,11 @@
             it search for hash and redirect with database data this can achieve prevention of alteration in original url
 
 
-##UI:
+UI:
    
         Design is complete and consist of form and teamplates
 
-##Setup:
+Setup:
 
         1. set virtual env
             virtualenv env
