@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding:1%;">
+    <div class="ui  segment" >
+        <form onsubmit="" action="" id="url_form" class="ui two column very relaxed stackable grid">
+          <div class="column">
+            <div class="ui form">
+                <div class="field" id="original_url">
+                    <label style="display: flex;gap:0.3rem;">Original URLs <p style="color: crimson;">*</p></label>
+                    <div class="ui labeled input">
+                        <div class="ui label">
+                          http://
+                        </div>
+                        <input type="text" id="original_url" name="original_url" placeholder="mysite.com" value="" required="">
+                    </div>
+                </div>
+
+                <div class="field" id="email">
+                    <label style="display: flex;gap:0.3rem;">Email id <p style="color: crimson;">*</p></label>
+                    <div class="ui labeled input required">
+                       <input type="email" id="email" name="email" placeholder="abc@mail.com" value="" required="true">
+                    </div>
+                </div>
+
+                <div class="field" id="special_key">
+                    <label>Special key</label>
+                    <div class="ui labeled input">
+                        <div class="ui label">
+                          Visible in genrated url
+                        </div>
+                        <input type="text" id="special_key" name="special_key" placeholder="/company_name/" value="">
+                    </div>
+                </div>
+
+                <div class="ui field" id="msg" style="display:flex;gap:1rem;">
+                    <label class="ui label">Need Message/information as args in url to show?</label>
+                    <button class="ui vertical animated button" id="" name="" style="padding-right: 21px !important;" onclick="to_add_args()">
+                        <i class="add icon small"></i>
+                        Add Message
+                    </button>
+                </div>
+
+                <div class="ui field" id="message_" name="message_" style="display: flex; flex-direction: column;">
+
+                </div>
+
+                <div class="ui field" id="expire_date_hide" style="display: flex;gap:2rem;">
+                    <label>Custom Number of days to expire url</label>
+                    <input type="number" id="expire_date" placeholder="Custom Number of days to expire url" value="5" name="quantity" min="1" max="30">
+                </div>
+
+                <div class="ui checkbox field" id="one_time_use" style="display: flex;gap:2rem;">
+                    <input type="checkbox" id="one_time_use" name="one_time_use" onclick="one_time_use_fn(this)">
+                    <label>One time use</label>
+                </div>
+                <input class="ui blue submit button save_data" type="submit" id="save_data" value="Genrate URLs">
+                <input class="ui black reset button" id="reset" name="reset" type="reset" value="Reset">
+            </div>
+            
+          
+          </div>              
+            <div class="aligned column">
+                <div class="ui big button">
+                <i class="world floating icon"></i>
+                Genrated url : 
+                </div><br><br>
+                <div id="given_url" name="given_url" class="medium aligned column ui input" style="gap:0.5rem;">
+                    <input type="text" value="" id="genrated_url" name="genrated_url" style="width:100%;padding-right: 21em;">
+                    <button class="ui teal right labeled icon button" id="copy_" name="copy_">
+                    <i class="copy icon" id="icon" name="icon"></i>
+                    Copy
+                    </button>
+                </div>
+            </div>
+       
+        </form>
+        <div class="ui vertical divider">
+        </div>
+    
+    </div>
+    <!-- <pre id='output'>Input some value and submit</pre> -->
+
+    <div style="padding-left: 2%;" class="extra content">
+        <a>
+        <i class="user icon"></i>
+        developer : Adesh Dangi
+        </a>
+    </div>
+</div>
+
+<script>
+//variables
+var self_url_ = "http://127.0.0.1:8080/";//new window.Text().baseURI;
+var payload={};
+
+//copy url
+function copy() {
+  var copyText = document.getElementById("genrated_url").value;
+  console.log(">>>",copyText)
+  if(copyText==""){
+      alert("Url not genrated to copy!");
+  }else{
+  copyText.select();
+  document.execCommand(copyText);
+  alert("Genrated Url copied to your clipboard!");}
+  copyText=""
+}
+
+function ad(data_){
+    console.log(data_);
+    document.getElementById("genrated_url").value = data_;
+};
+document.getElementById("copy_").addEventListener("click", copy);
+
+document.getElementById('url_form').addEventListener('submit', (e) => {
+        e.preventDefault();
+      debugger;
+        const formData = new FormData(e.target);
+        const data = Array.from(formData.entries()).reduce((memo, [key, value]) => ({
+          ...memo,
+          [key]: value,
+        }), {});
+        
+        payload=data;
+        if ( !payload.hasOwnProperty("one_time_use")){
+            payload["one_time_use"]=false;
+        }else{
+            payload["one_time_use"]=true;
+        }
+        if ( payload.hasOwnProperty("message_txt")){
+            var sp=payload['message_txt'].split(",")
+            payload["message"]=[...sp];
+        }else{
+            payload["message"]=[];
+        }
+        // document.getElementById('output').innerHTML = JSON.stringify(payload);
+        console.log(payload,"payload",payload.hasOwnProperty("one_time_use"));
+      debugger;
+
+      var get_data = getData(payload);
+        
+      });
+
+
+function getData(payload){
+    url1 = "http://127.0.0.1:8080/quick_link";
+    url = self_url_+"quick_link";
+    var payload1 = {
+        "original_url":payload["original_url"],
+        "email":payload["email"],
+        "expire_date":payload["quantity"],
+        "one_time_use":payload["one_time_use"],
+        "message":payload["message"],
+        "special_key":payload["special_key"]
+    }
+    // console.log(url)
+    data = fetch(url1,
+    {
+        method:'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:payload1}).then((response)=>{return response.json()})
+
+        console.log(data==undefined,data)
+        // ad(data);
+      debugger;
+
+        if (data==undefined){
+            console.log(data)
+        }else{
+            debugger;
+
+        return data["short_url"]}
+    
+}
+
+
+
+//add args as message
+
+function to_add_args(){
+    var args_box = document.getElementById("message_");
+    args_box.innerHTML= "<br><div class='ui field' id='arg_box'> <div class='ui right labeled left icon input'>  <i class='tags icon'></i>  <input id='message_txt' name='message_txt' type='text' placeholder='Enter tags'><a class='ui tag label'> Add args </a><a href='javascript:void(0)' onclick='close_args()' class='ui cross label'>X</a> </div></div>";
+}
+
+function close_args(){
+    var args_box = document.getElementById("arg_box");
+    console.log(args_box)
+    args_box.style.display = "none";
+}
+/*
+Fox checkbox of one time use
+*/
+function one_time_use_fn(one_time_use) {
+    var expire_ = document.getElementById("expire_date_hide");
+    expire_.style.display = one_time_use.checked ? "none" : "block";
+    // console.log(one_time_use.checked)
+    }
+
+
+</script>
+
+
+{% endblock %}
