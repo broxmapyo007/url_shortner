@@ -1,15 +1,17 @@
 #URl shortener Advance project
 
 #Project details:
-    language : python3
-    framework : FastAPI,jinja2
-    server run : uvicorn
-    database : sqlite3
+
+        language : python3
+        framework : FastAPI,jinja2
+        server run : uvicorn
+        database : sqlite3
 
 #Architecture:
 
-   All original url that need to turn into clean url , this project can achieve this with more feature then other projects
-   reason is user have more control on what args in url to be shown with customized message , user can update url key words for special things.
+    
+     All original url that need to turn into clean url , this project can achieve this with more feature then other projects
+     reason is user have more control on what args in url to be shown with customized message , user can update url key words for special things.
 
         1. project work on hash key as base to store all urls
         2. for each url user can assign expiry date count eg. expire after 5 days.
@@ -22,46 +24,55 @@
             firm user,
         
 #API :
-    #1. Api to generate urls
-       url : /quick_link , method = POST
-       example of
-       payload : {
-           "original_url":"https://www.company.com/diwali_offer?utm_locat=socail_media&utm_track=true",
-           "special_key":"diwali_offer",
-           "message":["track_on","diwali_special"],
-           "one_time_use":False,
-           "email: "abc@company.com",
-           "expire_date":5
-       }
-       required_fields:
-            original_url,email
-       optional:
-           "special_key":"",
-           "message":[],
-           "one_time_use":False,
-           "expire_date":5
-       output for above payload:
-            short url : https://url_shortner_project.herokuapp.com/4asdkb2h1b213/diwali_offer?message1=track_on&message2=diwali_special
-            key = 4adsk2h1b213 is hash piece
 
-   2. Api to redirect to original url
-        url : /{key:path} ,  method = GET
-        eg, https://url_shortner_project.herokuapp.com/4asdkb2h1b213/diwali_offer?message1=track_on&message2=diwali_special
+        #1. Api to generate urls
         
-        if not expired and not one time used then it will redirect to original url
-        it search for hash and redirect with database data this can achieve prevention of alteration in original url
+           url : /quick_link , method = POST
+       
+           example of
+           payload : {
+               "original_url":"https://www.company.com/diwali_offer?utm_locat=socail_media&utm_track=true",
+               "special_key":"diwali_offer",
+               "message":["track_on","diwali_special"],
+               "one_time_use":False,
+               "email: "abc@company.com",
+               "expire_date":5
+           }
+           
+           required_fields:
+                original_url,email
+                
+           optional:
+               "special_key":"",
+               "message":[],
+               "one_time_use":False,
+               "expire_date":5
+               
+           output for above payload:
+                short url : https://url_shortner_project.herokuapp.com/4asdkb2h1b213/diwali_offer?message1=track_on&message2=diwali_special
+                key = 4adsk2h1b213 is hash piece
 
-#UI:
-    Design is complete and consist of form and teamplates
+        2. Api to redirect to original url
+            url : /{key:path} ,  method = GET
+            eg, https://url_shortner_project.herokuapp.com/4asdkb2h1b213/diwali_offer?message1=track_on&message2=diwali_special
 
-#Setup:
-    1. set virtual env
-        virtualenv env
-        source env/bin/activate
-    2. install requirements file
-        pip3 install -r requirments.txt
-    3. run server:
-        uvicorn main:app --reload --port 8080
+            if not expired and not one time used then it will redirect to original url
+            it search for hash and redirect with database data this can achieve prevention of alteration in original url
+
+
+##UI:
+   
+        Design is complete and consist of form and teamplates
+
+##Setup:
+
+        1. set virtual env
+            virtualenv env
+            source env/bin/activate
+        2. install requirements file
+            pip3 install -r requirments.txt
+        3. run server:
+            uvicorn main:app --reload --port 8080
         
         
 
