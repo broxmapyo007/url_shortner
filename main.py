@@ -45,7 +45,7 @@ async def redirect_url_to_orginal(key:str,db:Session=Depends(get_db)):
     With help of unique key we saved, it will redirect to original url.
     """
     try:
-        url = self_url
+#         url = self_url
         data = get_org_url_from_key(key)
         if not data:
             raise Exception("No matching url data found")
